@@ -1,0 +1,14 @@
+<% content_for :title, "글 수정" %>
+
+<section class="page-header">
+  <div>
+    <h1>글 수정</h1>
+    <p class="text-muted">내용을 다시 확인하고 필요한 부분을 고쳐주세요.</p>
+  </div>
+  <div class="page-header__actions">
+    <%= link_to "글 보기", @post, class: "btn" %>
+    <%= link_to "목록으로", posts_path, class: "btn" %>
+  </div>
+</section>
+
+<%= render "form", post: @post %>

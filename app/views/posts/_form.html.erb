@@ -1,0 +1,26 @@
+<%= form_with(model: post, class: "form-card") do |form| %>
+  <% if post.errors.any? %>
+    <div class="form-errors">
+      <h2><%= pluralize(post.errors.count, "error") %> 때문에 저장에 실패했습니다.</h2>
+      <ul>
+        <% post.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="form-field">
+    <%= form.label :title, "제목" %>
+    <%= form.text_field :title, placeholder: "제목을 입력하세요", required: true %>
+  </div>
+
+  <div class="form-field">
+    <%= form.label :body, "내용" %>
+    <%= form.text_area :body, rows: 8, placeholder: "내용을 자유롭게 적어주세요", required: true %>
+  </div>
+
+  <div class="form-actions">
+    <%= form.submit "저장하기", class: "btn primary" %>
+  </div>
+<% end %>
