@@ -1,0 +1,67 @@
+<% content_for :title, @post.title %>
+
+<section class="page-header">
+  <div>
+    <p class="eyebrow">게시글</p>
+    <h1><%= @post.title %></h1>
+    <p class="text-muted">
+      작성 <%= l(@post.created_at, format: :long) %>
+      <% if @post.updated_at > @post.created_at %>
+        · 수정 <%= l(@post.updated_at, format: :long) %>
+      <% end %>
+    </p>
+  </div>
+  <div class="page-header__actions">
+    <%= link_to "목록으로", posts_path, class: "btn" %>
+    <%= link_to "수정", edit_post_path(@post), class: "btn" %>
+    <%= button_to "삭제", @post, method: :delete, class: "btn danger", form: { data: { turbo_confirm: "정말 삭제할까요?" } } %>
+  </div>
+</section>
+
+<section class="card post-body">
+  <%= simple_format(@post.body) %>
+</section>
+
+<section class="comments">
+  <header>
+    <h2>댓글 <%= @comments.size %>개</h2>
+  </header>
+
+  <div class="comment-list">
+    <% if @comments.any? %>
+      <%= render @comments %>
+    <% else %>
+      <p class="empty-state">가장 먼저 댓글을 남겨보세요!</p>
+    <% end %>
+  </div>
+
+  <div class="card comment-form">
+    <h3>댓글 작성하기</h3>
+    <%= form_with(model: [@post, @comment]) do |form| %>
+      <% if @comment.errors.any? %>
+        <div class="form-errors">
+          <h4><%= pluralize(@comment.errors.count, "error") %> 때문에 댓글을 저장할 수 없습니다.</h4>
+          <ul>
+            <% @comment.errors.each do |error| %>
+              <li><%= error.full_message %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <div class="form-field">
+        <%= form.label :author_name, "닉네임" %>
+        <%= form.text_field :author_name, required: true, placeholder: "작성자 이름" %>
+      </div>
+
+      <div class="form-field">
+        <%= form.label :body, "내용" %>
+        <%= form.text_area :body, rows: 4, required: true, placeholder: "하고 싶은 말을 적어주세요" %>
+      </div>
+
+      <div class="form-actions">
+        <%= form.submit "댓글 남기기", class: "btn primary" %>
+      </div>
+    <% end %>
+  </div>
+</section>
