@@ -5,7 +5,7 @@
     <p class="eyebrow">게시글</p>
     <h1><%= @post.title %></h1>
     <p class="text-muted">
-      작성 <%= l(@post.created_at, format: :long) %>
+      <%= @post.user.name %>님이 작성 <%= l(@post.created_at, format: :long) %>
       <% if @post.updated_at > @post.created_at %>
         · 수정 <%= l(@post.updated_at, format: :long) %>
       <% end %>
@@ -13,8 +13,10 @@
   </div>
   <div class="page-header__actions">
     <%= link_to "목록으로", posts_path, class: "btn" %>
-    <%= link_to "수정", edit_post_path(@post), class: "btn" %>
-    <%= button_to "삭제", @post, method: :delete, class: "btn danger", form: { data: { turbo_confirm: "정말 삭제할까요?" } } %>
+    <% if @post.user == current_user %>
+      <%= link_to "수정", edit_post_path(@post), class: "btn" %>
+      <%= button_to "삭제", @post, method: :delete, class: "btn danger", form: { data: { turbo_confirm: "정말 삭제할까요?" } } %>
+    <% end %>
   </div>
 </section>
 
@@ -49,10 +51,14 @@
         </div>
       <% end %>
 
-      <div class="form-field">
-        <%= form.label :author_name, "닉네임" %>
-        <%= form.text_field :author_name, required: true, placeholder: "작성자 이름" %>
-      </div>
+      <% if user_signed_in? %>
+        <p><strong><%= current_user.name %></strong>으로 댓글 남기기</p>
+      <% else %>
+        <div class="form-field">
+          <%= form.label :author_name, "닉네임" %>
+          <%= form.text_field :author_name, required: true, placeholder: "작성자 이름" %>
+        </div>
+      <% end %>
 
       <div class="form-field">
         <%= form.label :body, "내용" %>

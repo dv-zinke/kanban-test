@@ -4,7 +4,7 @@
       <%= link_to post.title, post_path(post) %>
     </h2>
     <p class="post-card__meta">
-      <%= l(post.created_at, format: :long) %>
+      <%= post.user.name %>님이 <%= l(post.created_at, format: :long) %>에 작성
     </p>
   </header>
   <p class="post-card__excerpt">
